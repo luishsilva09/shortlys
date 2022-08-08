@@ -74,7 +74,9 @@ export default function Home(){
             <Itens>
                 {load? <p>carregando</p>: 
                 urlsUser.shortenedUrls.map((e,index) => 
-                <ShortenUrls updateList={updateList} url={e.url} shortUrl={e.shortUrl} visitCount={e.visitCount} id={e.id} key={index} config={config}/>
+                <ShortenUrls updateList={updateList} 
+                url={e.url} shortUrl={e.shortUrl} 
+                visitCount={e.visitCount} id={e.id} key={index} config={config}/>
                  )}
         </Itens>
         </Container>

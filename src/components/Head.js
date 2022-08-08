@@ -6,7 +6,19 @@ import UserContext from "../context/UserContext";
 export default function Head(){
     const {userData} = React.useContext(UserContext)
     if(userData){
-        
+        return (
+        <>
+        <Header>  
+            <Text>
+                <Link to= "/"><h1>Home</h1></Link>
+                <Link to="/ranking"><h2>Ranking</h2></Link>
+                <h3>Sair</h3>
+            </Text> 
+        </Header>
+        <LogoImg>
+           <Link to="/"> <img src={Logo} alt="Logo shortly"/></Link>
+        </LogoImg>
+        </>)
     }
     return (
         <>
