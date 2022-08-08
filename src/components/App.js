@@ -5,6 +5,7 @@ import SignUp from "./SignUp.js"
 import UserContext from "../context/UserContext";
 import React from "react";
 import Head from "./Head.js";
+import Ranking from "./Ranking.js";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -16,6 +17,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />}/>
       <Route path="/signin"element={<SignIn />}/>
+      <Route path="/ranking" element={<Ranking />}/>
     </Routes>
     </BrowserRouter>
     </UserContext.Provider>
