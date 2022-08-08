@@ -1,12 +1,51 @@
+import axios from "axios"
+import React from "react"
 import styled from "styled-components"
-export default function SignIn(){
+import {ThreeDots} from 'react-loader-spinner'
+import UserContext from "../context/UserContext.js"
 
+export default function SignIn(){
+    const [load,setLoad] =React.useState(false)
+    const {setUserData} = React.useContext(UserContext)
+    const [invalidUser,setInvalidUser] = React.useState()
+    const [loginData,LoginData] = React.useState({
+        email:"",
+        password:""
+    })
+    function signin(event){
+        event.preventDefault()
+        setLoad(true)
+        const promise = axios.post('https://projeto16-back-shortly.herokuapp.com/signin',loginData)
+        promise
+            .then((req,res) =>{
+                setLoad(false)
+                setUserData(req.data)
+                console.log(req.data)
+            })
+            .catch((res)=>{
+                console.log(res.response.data)
+                setLoad(false)
+                setInvalidUser(res.response.data)
+            })
+        
+    }
     return (
         <Container>
-            <Forms>
-                <input type="email" placeholder="E-mail"></input>
-                <input type="password" placeholder="Senha"></input>
-                <button>Entrar</button>
+            <Forms onSubmit={(event) => signin(event)}>
+                <input 
+                type="email" 
+                placeholder="E-mail"
+                disabled={load}
+                onChange={e => LoginData({...loginData,email: e.target.value})}
+                ></input>
+                <input 
+                type="password" 
+                placeholder="Senha"
+                disabled={load}
+                onChange={e => LoginData({...loginData,password: e.target.value})}
+                ></input>
+                <button type="submit">{load?  <ThreeDots color="#fff"></ThreeDots>:<p>Entrar</p>}</button>
+                {invalidUser? <p>{invalidUser}</p>: <></>}
             </Forms>  
         </Container>
     )
@@ -46,6 +85,9 @@ button{
     color:#fff;
     font-size: 15px;
     margin-top:60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       cursor: pointer;
       filter: brightness(130%);

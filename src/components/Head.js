@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import Logo from "../assets/Logo.svg"
+import Logo from "../assets/Logo.svg";
+import { Link } from "react-router-dom";
 export default function Head(){
     return (
         <>
         <Header>  
             <Text>
-                <p>Entrar</p>
-                <p>Cadastre-se</p>
+                <Link to= "signin"><p>Entrar</p></Link>
+                <Link to="signup"><p>Cadastre-se</p></Link>
             </Text> 
         </Header>
         <LogoImg>
@@ -23,6 +24,11 @@ display: flex;
 justify-content:right;
 padding-right: 90px;
 align-items: center;
+a{
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
 
 `
 const Text = styled.div`
