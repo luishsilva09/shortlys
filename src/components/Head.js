@@ -1,17 +1,23 @@
 import styled from "styled-components";
 import Logo from "../assets/Logo.svg";
 import { Link } from "react-router-dom";
+import React from "react";
+import UserContext from "../context/UserContext";
 export default function Head(){
+    const {userData} = React.useContext(UserContext)
+    if(userData){
+        
+    }
     return (
         <>
         <Header>  
             <Text>
-                <Link to= "signin"><p>Entrar</p></Link>
-                <Link to="signup"><p>Cadastre-se</p></Link>
+                <Link to= "/signin"><h1>Entrar</h1></Link>
+                <Link to="/signup"><h2>Cadastre-se</h2></Link>
             </Text> 
         </Header>
         <LogoImg>
-            <img src={Logo} alt="Logo shortly"/>
+           <Link to="/"> <img src={Logo} alt="Logo shortly"/></Link>
         </LogoImg>
         </>
     )

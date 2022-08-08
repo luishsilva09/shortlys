@@ -2,16 +2,18 @@ import axios from "axios"
 import React from "react"
 import styled from "styled-components"
 import {ThreeDots} from 'react-loader-spinner'
-import UserContext from "../context/UserContext.js"
+import UserContext from "../context/UserContext"
+import { useNavigate } from "react-router-dom"
 
 export default function SignIn(){
     const [load,setLoad] =React.useState(false)
-    const {setUserData} = React.useContext(UserContext)
+    const {userData,setUserData} = React.useContext(UserContext)
     const [invalidUser,setInvalidUser] = React.useState()
     const [loginData,LoginData] = React.useState({
         email:"",
         password:""
     })
+    const navigate = useNavigate()
     function signin(event){
         event.preventDefault()
         setLoad(true)
@@ -20,7 +22,7 @@ export default function SignIn(){
             .then((req,res) =>{
                 setLoad(false)
                 setUserData(req.data)
-                console.log(req.data)
+                navigate("/")
             })
             .catch((res)=>{
                 console.log(res.response.data)
@@ -30,6 +32,7 @@ export default function SignIn(){
         
     }
     return (
+        <>
         <Container>
             <Forms onSubmit={(event) => signin(event)}>
                 <input 
@@ -47,7 +50,7 @@ export default function SignIn(){
                 <button type="submit">{load?  <ThreeDots color="#fff"></ThreeDots>:<p>Entrar</p>}</button>
                 {invalidUser? <p>{invalidUser}</p>: <></>}
             </Forms>  
-        </Container>
+        </Container></>
     )
 }
 
