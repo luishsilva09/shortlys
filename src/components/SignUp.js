@@ -1,14 +1,61 @@
+import axios from "axios"
+import React from "react"
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
+import {ThreeDots} from 'react-loader-spinner'
 
 export default function SignUp(){
+    const [invalidUser,setInvalidUser] = React.useState()
+    const [load, setLoad] = React.useState(false)
+    const [signupData, setSignupData] = React.useState({
+        name:'',
+        email:'',
+        password:'',
+        confirmPassword:''
+    })
+    const navigate = useNavigate()
+    function signup(event){
+        setLoad(true)
+        event.preventDefault()
+        const promise = axios.post(`https://projeto16-back-shortly.herokuapp.com/signup`,signupData)
+        promise
+            .then((req,res) => {
+                setLoad(false)
+                navigate('/signin')
+            })
+            .catch((req,res)=>{
+                console.log(req.response.data)
+                setInvalidUser("Erro")
+                setLoad(false)
+            })
+    }
     return (
         <Container>
-        <Forms>
-            <input type="text" placeholder="Nome"></input>
-            <input type="Email" placeholder="E-mail"></input>
-            <input type="password" placeholder="Senha"></input>
-            <input type="password" placeholder="Confirme senha"></input>
-            <button>Criar Conta</button>
+        <Forms onSubmit={(event) => signup(event)}>
+            <input 
+            type="text" 
+            placeholder="Nome"
+            disabled={load}
+            onChange={(e)=> setSignupData({...signupData, name:e.target.value})}
+            />
+            <input 
+            type="Email" 
+            placeholder="E-mail"  
+            disabled={load}
+            onChange={(e)=> setSignupData({...signupData, email:e.target.value})}/>
+            
+            <input 
+            type="password" 
+            placeholder="Senha"
+            disabled={load}
+            onChange={(e)=> setSignupData({...signupData, password:e.target.value})}/>
+            <input 
+            type="password" 
+            placeholder="Confirme senha"
+            disabled={load}
+            onChange={(e)=> setSignupData({...signupData, confirmPassword:e.target.value})}/>
+            <button type="submit" disabled={load}>{load?  <ThreeDots color="#fff"></ThreeDots>:<p>Criar conta</p>}</button>
+            {invalidUser? <p>{invalidUser}</p>: <></>}
         </Forms>
         </Container>
     )
@@ -47,6 +94,9 @@ button{
     color:#fff;
     font-size: 15px;
     margin-top: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       cursor: pointer;
       filter: brightness(130%);
