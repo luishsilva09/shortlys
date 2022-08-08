@@ -19,6 +19,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 flex-wrap: wrap;
+height: 70vh;
 `
 
 const Forms = styled.form`
@@ -45,6 +46,7 @@ button{
     border-radius: 12px;
     color:#fff;
     font-size: 15px;
+    margin-top: 65px;
     &:hover {
       cursor: pointer;
       filter: brightness(130%);
