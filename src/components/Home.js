@@ -6,22 +6,32 @@ import axios from 'axios'
 import { FaTrashAlt } from "react-icons/fa";
 
 
-function ShortenUrls({url,shortUrl,visitCount}){
+function ShortenUrls({url,shortUrl,visitCount,id,config,updateList}){
+    function deleteShorten(){
+        const promise = axios.delete(`https://projeto16-back-shortly.herokuapp.com/urls/${id}`,config)
+        promise.then((req,res)=> {
+            console.log("deletado com sucesso")
+            updateList()
+
+        })
+    }
+    function openUrl(){
+        window.location.href = `https://projeto16-back-shortly.herokuapp.com/urls/open/${shortUrl}`
+    }
     return(
-        <>
-            <Item>
+        <Item>
+            <Textitem onClick={() => openUrl()}>
                 <p>{url}</p>
                 <p>{shortUrl}</p>
                 <p>Quantidade de visitantes: {visitCount}</p>
-            </Item>
-            <Trash><FaTrashAlt></FaTrashAlt></Trash>
-        </>
+            </Textitem>
+            <Trash onClick={() => deleteShorten()}><FaTrashAlt></FaTrashAlt></Trash>
+        </Item>
     )
 }
 
 export default function Home(){
-   // const {userData} = React.useContext(UserContext)
-   const userData = '558c23f4-f1ca-4e76-895d-4e350df57149' 
+   const {userData} = React.useContext(UserContext) 
    const [urlsUser, setUrlsUser] = React.useState()
    const [load,setLoad] = React.useState(true)
    const [url,setUrl] = React.useState({
@@ -61,8 +71,12 @@ export default function Home(){
                 ></input>
                 <button type='submit'>Encurtar Link</button>
             </Forms>
-            {load? <p>carregando</p>: 
-            urlsUser.shortenedUrls.map((e,index) => <ShortenUrls url={e.url} shortUrl={e.shortUrl} visitCount={e.visitCount} key={index}/> )}
+            <Itens>
+                {load? <p>carregando</p>: 
+                urlsUser.shortenedUrls.map((e,index) => 
+                <ShortenUrls updateList={updateList} url={e.url} shortUrl={e.shortUrl} visitCount={e.visitCount} id={e.id} key={index} config={config}/>
+                 )}
+        </Itens>
         </Container>
     )}
     return ( 
@@ -74,7 +88,8 @@ export default function Home(){
 
 const Container = styled.div`
 display: flex;
-justify-content: center;
+flex-direction: column;
+align-items: center;
 flex-wrap: wrap;
 `
 const Text = styled.h1`
@@ -86,7 +101,7 @@ display: flex;
 margin: 30px;
 font-weight: 700;
 `
-const Item = styled.div`    
+const Textitem = styled.div`    
     width: 769px;
     height: 60px;
     background: #80CC74;
@@ -98,7 +113,7 @@ const Item = styled.div`
     padding-left:20px ;
     padding-right:20px ;
     color:#fff;
-    margin
+    margin-bottom: 20px;
 `
 const Trash = styled.div`
     width: 130px;
@@ -146,3 +161,9 @@ button{
       filter: brightness(130%);
     }
 }`
+const Itens = styled.div`
+display:flex;
+flex-direction:column;`
+
+const Item = styled.div`
+display:flex`
